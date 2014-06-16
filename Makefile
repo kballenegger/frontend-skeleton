@@ -5,33 +5,54 @@ JSX ?= jsx
 DIST ?= dist
 BUILD ?= build
 JSX_FILES := $(shell find ./src -name *.jsx)
-WISP_FILES := $(shell find ./src -name *.jsx)
+WISP_FILES := $(shell find ./src -name *.wisp)
+DEPS_FILES := $(shell find ./vendor -name *.js)
+
+# Default target
+default: all
 
 
 # Files
-#wisp: $(WISP_FILES)
-	#@cat $^ | wisp > $(BUILD)/js/wisp.js
 
-jsx: $(JSX_FILES)
+# files for target wisp
+$(BUILD)/js/wisp.js: $(WISP_FILES)
+	@echo "Compiling wisp."
+	@cat $^ | wisp > $@
+
+# files for target jsx
+$(BUILD)/js/jsx.js: $(JSX_FILES)
 	@echo "Compiling JSX."
-	@cat $^ | jsx > $(BUILD)/js/jsx.js
+	@cat $^ | jsx > $@
 
-dist/static/index.html: src/index.html
+# files for target deps
+$(DIST)/static/deps.js: $(DEPS_FILES)
+	@echo "Packaging dependencies."
+	@cat $^ > $@
+
+# file for target html
+$(DIST)/index.html: src/index.html
 	@echo "Copying index.html."
-	@cp src/index.html dist/static/index.html
+	@cat $^ > $@
+
+# files for target js
+$(DIST)/static/app.js: $(BUILD)/js/jsx.js $(BUILD)/js/wisp.js
+	@echo "Concatenating JS code."
+	@cat $^ > $@
+
+
+# Targets
+
+all: html deps js
+
+html: $(DIST)/index.html
+deps: $(DIST)/static/deps.js
+
+jsx: $(BUILD)/js/jsx.js 
+js: $(DIST)/static/app.js
+wisp: $(BUILD)/js/wisp.js 
+
 
 # Commands
-all: html concat
-
-html: dist/static/index.html
-
-concat: jsx 
-	@echo "Concatenating JS code."
-	@cat $^ > $(DIST)/script.js
-
-deps: vendor/*.js
-	@echo "Packaging dependencies."
-	@cat $^ > $(DIST)/static/deps.js
 
 server:
 	@echo "Running server."
@@ -54,4 +75,4 @@ file-structure:
 
 
 # I don't understand this. TODO: read up on this.
-.PHONY: clean file-structure all server dev deps concat html jsx wisp
+#.PHONY: default clean file-structure all server dev deps concat html jsx wisp

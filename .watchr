@@ -11,7 +11,7 @@ def run_server
   quit_server if $server
   $server = fork do
     system('make')
-    Dir.chdir('src')
+    Dir.chdir('dist')
     exec('python -m SimpleHTTPServer')
   end
 end

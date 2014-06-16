@@ -4,17 +4,19 @@ JSX ?= jsx
 # Paths
 DIST ?= dist
 BUILD ?= build
-#JSX_FILES := $(shell find . -name *.jsx)
+JSX_FILES := $(shell find ./src -name *.jsx)
+WISP_FILES := $(shell find ./src -name *.jsx)
 
+
+# Files
+wisp: $(WISP_FILES)
+	@cat $^ | wisp > $(BUILD)/js/wisp.js
+
+jsx: $(JSX_FILES)
+	@cat $^ | jsx > $(BUILD)/js/jsx.js
 
 # Commands
 all: wisp jsx concat
-
-wisp: src/*.wisp
-	@cat $^ | wisp > $(BUILD)/js/wisp.js
-
-jsx: src/*.jsx
-	@cat $^ | jsx > $(BUILD)/js/jsx.js
 
 concat: build/js/*.js
 	@cat $^ > $(DIST)/script.js

@@ -1,4 +1,5 @@
 # Tools
+SHELL := /bin/bash
 JSX ?= jsx
 
 # Paths
@@ -18,6 +19,12 @@ default: all
 $(BUILD)/js/wisp.js: $(WISP_FILES)
 	@echo "Compiling wisp."
 	@cat $^ | wisp > $@
+
+# alternatively:
+#@echo -n '' > $@
+#@for f in $^ ; do \
+#cat $$f | wisp --source-uri $$f >> $@ ;\
+#done
 
 # files for target jsx
 $(BUILD)/js/jsx.js: $(JSX_FILES)

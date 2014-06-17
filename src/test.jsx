@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-React.renderComponent(
-  <h1>Hello, world!</h1>,
-  document.getElementById('example')
-);
+//React.renderComponent(
+  //<div id="one" class="two"><span>Hello</span> blah</div>,
+  //document.getElementById('example')
+//);

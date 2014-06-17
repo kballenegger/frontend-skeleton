@@ -35,3 +35,11 @@
     (concat `(~react-full-sym ~attrs) body)
     )
   )
+
+(defmacro debug
+  "like .tap {|x| p x } in ruby"
+  [& args]
+  (let [n (name (first args))]
+    `(let [x ~(concat (list) args)] (console.log (+ "Debug " ~n ": " x)) x)
+    )
+  )

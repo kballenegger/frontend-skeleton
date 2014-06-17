@@ -23,8 +23,26 @@
   )
 
 (def-react-class CommentInput
+  (submit []
+          (let [author-dom (.getDOMNode this.refs.author)
+                author (.trim (:value author-dom))
+                text-dom (.getDOMNode this.refs.text)
+                text (.trim (:value text-dom))
+                ]
+            (if (and text author)
+              (let []
+                (set! (aget author-dom :value) "")
+                (set! (aget text-dom :value) "")
+                (this.props.callback {:author author, :text text})
+                ))
+            false)
+          )
   (render []
-          (dom div {} "Temporary: will be a comment input box")
+          (dom form {:className :comment-form, :onSubmit this.submit}
+               (dom input {:type "text", :placeholder "Name", :ref :author})
+               (dom input {:type "text", :placeholder "Say something...", :ref :text})
+               (dom input {:type "submit", :value "Post"})
+               )
           ))
 
 (def-react-class CommentList
@@ -35,22 +53,27 @@
           )
   )
 
-(def test-data [
-                {:author "Brandon Goldman", :text "I am Brandon!"}
-                {:author "George Burke", :text "I am George!"}
-                {:author "Kenneth Ballenegger", :text "I am Kenneth!"}
-                ])
+(def test-data )
 
 (def-react-class CommentBox
+  (comments-updated [comment]
+                    (this.setState {:data (.concat this.state.data comment)})
+                    (console.log this.state)
+                    )
+  (getInitialState []
+                   {:data [{:author "Brandon Goldman", :text "I am Brandon!"}
+                           {:author "George Burke", :text "I am George!"}
+                           {:author "Kenneth Ballenegger", :text "I am Kenneth!"}
+                           ]})
   (render []
           (dom div {:className :comment-box}
                (dom h1 empty-hash "Comments:") ; NOTE: hack around stupid compiler crasher bug
-               (CommentList {:data this.props.data})
-               (CommentInput)
+               (CommentList {:data this.state.data})
+               (CommentInput {:callback (:comments-updated this)})
                )
           )
   )
 
 (React.renderComponent
-  (CommentBox {:data test-data})
+  (CommentBox)
   (document.getElementById "app"))

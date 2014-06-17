@@ -58,7 +58,6 @@
 (def-react-class CommentBox
   (comments-updated [comment]
                     (this.setState {:data (.concat this.state.data comment)})
-                    (console.log this.state)
                     )
   (getInitialState []
                    {:data [{:author "Brandon Goldman", :text "I am Brandon!"}
@@ -76,4 +75,4 @@
 
 (React.renderComponent
   (CommentBox)
-  (document.getElementById "app"))
+  (document.getElementById "app-wisp"))

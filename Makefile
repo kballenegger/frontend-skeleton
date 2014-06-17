@@ -8,6 +8,7 @@ BUILD ?= build
 JSX_FILES := $(shell find ./src -name *.jsx)
 WISP_FILES := $(shell find ./src -name *.wisp)
 DEPS_FILES := $(shell find ./vendor -name *.js)
+SCSS_FILES := $(shell find ./src/style -name *.scss)
 
 # Default target
 default: all
@@ -45,6 +46,12 @@ $(DIST)/index.html: src/index.html
 $(DIST)/static/app.js: $(BUILD)/js/jsx.js $(BUILD)/js/wisp.js
 	@echo "Concatenating JS code."
 	@cat $^ > $@
+
+# files for target scss
+# NOTE: only the root file is compiled, the rest are included by sass itself
+$(DIST)/static/style.css: $(SCSS_FILES)
+	@echo "Compiling SCSS."
+	@sass src/style/style.scss $(DIST)/static/style.css
 
 
 # Targets

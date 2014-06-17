@@ -6,8 +6,7 @@
 (defn md->html
   "convert markdown to html using showdown"
   [md]
-  (converter.makeHtml md)
-  )
+  (converter.makeHtml md))
 
 (def-react-class Comment
   (render []
@@ -42,16 +41,12 @@
                (dom input {:type "text", :placeholder "Name", :ref :author})
                (dom input {:type "text", :placeholder "Say something...", :ref :text})
                (dom input {:type "submit", :value "Post"})
-               )
-          ))
+               )))
 
 (def-react-class CommentList
   (render []
           (dom div {}
-               (.map this.props.data #(Comment %))
-               )
-          )
-  )
+               (.map this.props.data #(Comment %)))))
 
 (def-react-class CommentBox
   (comments-updated [comment]
@@ -67,9 +62,7 @@
                (dom h1 empty-hash "Comments:") ; NOTE: hack around stupid compiler crasher bug
                (CommentList {:data this.state.data})
                (CommentInput {:callback (:comments-updated this)})
-               )
-          )
-  )
+               )))
 
 (React.renderComponent
   (CommentBox)

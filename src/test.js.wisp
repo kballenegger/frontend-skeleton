@@ -53,8 +53,6 @@
           )
   )
 
-(def test-data )
-
 (def-react-class CommentBox
   (comments-updated [comment]
                     (this.setState {:data (.concat this.state.data comment)})

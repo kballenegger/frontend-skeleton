@@ -10,7 +10,7 @@
 
 (def-react-class Comment
   (render []
-          (dom div {}
+          (dom div {:className :comment}
                (dom div {:className :author}
                     this.props.name)
                (dom div {:className :text}

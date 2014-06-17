@@ -56,13 +56,14 @@ $(DIST)/static/style.css: $(SCSS_FILES)
 
 # Targets
 
-all: html deps js
+all: html deps js css
 
 html: $(DIST)/index.html
 deps: $(DIST)/static/deps.js
 
 jsx: $(BUILD)/js/jsx.js 
 js: $(DIST)/static/app.js
+css: $(DIST)/static/style.css
 wisp: $(BUILD)/js/wisp.js 
 
 

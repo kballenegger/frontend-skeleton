@@ -34,7 +34,8 @@
 (def-react-class CommentBox
   (render []
           (dom div {:className :commentBox}
-               "Comments!"
+               (dom h1 {} "Comments:")
+               "Comments:"
                (CommentList {:name "World"})
                )
           )

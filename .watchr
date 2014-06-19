@@ -1,4 +1,5 @@
 # $server contains server.
+# vim: ft=ruby
 
 def quit_server
   return unless $server

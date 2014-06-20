@@ -1,3 +1,9 @@
+# NOTE: There are two root files which are the entrypoints to compilation for
+# both JavaScript and CSS. Those files are:
+#
+#   src/js/app.{js,wisp,jsx}
+#   src/style/style.scss
+
 # Tools
 SHELL := /bin/bash
 JSX ?= jsx
@@ -5,10 +11,10 @@ JSX ?= jsx
 # Paths
 DIST ?= dist
 BUILD ?= build
-JSX_FILES := $(shell find ./src -name *.jsx)
-WISP_FILES := $(shell find ./src -name *.wisp)
-DEPS_FILES := $(shell find ./vendor -name *.js)
-SCSS_FILES := $(shell find ./src/style -name *.scss)
+JSX_FILES := $(shell find ./src/js -name '*.jsx')
+WISP_FILES := $(shell find ./src/js -name '*.wisp')
+WISP_MACRO_FILES := $(shell find ./src/wisp-macros -name '*.wisp')
+SCSS_FILES := $(shell find ./src/style -name '*.scss')
 
 # Default target
 default: all
@@ -17,25 +23,14 @@ default: all
 # Files
 
 # files for target wisp
-$(BUILD)/js/wisp.js: $(WISP_FILES)
-	@echo "Compiling wisp."
-	@cat $^ | wisp > $@
-
-# alternatively:
-#@echo -n '' > $@
-#@for f in $^ ; do \
-#cat $$f | wisp --source-uri $$f >> $@ ;\
-#done
+$(BUILD)/js/%.js: src/js/%.wisp
+	@echo "Compiling wisp: $^."
+	@cat $(WISP_MACRO_FILES) $^ | wisp > $@
 
 # files for target jsx
-$(BUILD)/js/jsx.js: $(JSX_FILES)
-	@echo "Compiling JSX."
+$(BUILD)/js/%.js: src/js/%.jsx
+	@echo "Compiling JSX: $^."
 	@cat $^ | jsx > $@
-
-# files for target deps
-$(DIST)/static/deps.js: $(DEPS_FILES)
-	@echo "Packaging dependencies."
-	@cat $^ > $@
 
 # file for target html
 $(DIST)/index.html: src/index.html
@@ -43,9 +38,11 @@ $(DIST)/index.html: src/index.html
 	@cat $^ > $@
 
 # files for target js
-$(DIST)/static/app.js: $(BUILD)/js/jsx.js $(BUILD)/js/wisp.js
-	@echo "Concatenating JS code."
-	@cat $^ > $@
+# TODO: debug?
+$(DIST)/static/app.js: jsx wisp $(wildcard $(BUILD)/js/*.js)
+	@echo "Running browserify."
+	@cp src/js/app.js build/js/app.js
+	@browserify build/js/app.js > $@
 
 # files for target scss
 # NOTE: only the root file is compiled, the rest are included by sass itself
@@ -56,15 +53,14 @@ $(DIST)/static/style.css: $(SCSS_FILES)
 
 # Targets
 
-all: html deps js css
+all: html js css
 
 html: $(DIST)/index.html
-deps: $(DIST)/static/deps.js
 
-jsx: $(BUILD)/js/jsx.js 
+jsx: $(patsubst ./src/js/%.jsx,./$(BUILD)/js/%.js,$(JSX_FILES))
+wisp: $(patsubst ./src/js/%.wisp,./$(BUILD)/js/%.js,$(WISP_FILES))
 js: $(DIST)/static/app.js
 css: $(DIST)/static/style.css
-wisp: $(BUILD)/js/wisp.js 
 
 
 # Commands

@@ -13,7 +13,7 @@ var mdToHtml = function mdToHtml(md) {
 var Comment = React.createClass({
     render: function () {
         return <div className="comment">
-            <div className="author">{this.props.author}</div>
+            <div className="author">{this.props.author} -- {this.props.username}</div>
             <div className="text">{mdToHtml(this.props.text)}</div>
         </div>;
     }
@@ -21,8 +21,9 @@ var Comment = React.createClass({
 
 var CommentList = React.createClass({
     render: function () {
+        var username = this.props.username;
         var comments = this.props.data.map(function (e) {
-            return <Comment author={e.author} text={e.text} />
+            return <Comment author={e.author} text={e.text} username={username} />
         });
         return <div>{comments}</div>;
     }
@@ -36,7 +37,7 @@ var CommentInput = React.createClass({
             <input type="submit" value="Post" />
         </form>;
     },
-    submit: function (argument) {
+    submit: function () {
         var authorDom = this.refs.author.getDOMNode();
         var textDom = this.refs.text.getDOMNode();
         var author = authorDom.value.trim();
@@ -53,8 +54,10 @@ var CommentInput = React.createClass({
 var CommentBox = React.createClass({
     render: function () {
         return <div className="comment-box">
+            <input type="text" value={this.state.username}
+                onChange={this.usernameChanged} ref="username" />
             <h1>Comments:</h1>
-            <CommentList data={this.state.data} />
+            <CommentList data={this.state.data} username={this.state.username} />
             <CommentInput callback={this.commentsUpdated} />
         </div>;
     },
@@ -64,7 +67,14 @@ var CommentBox = React.createClass({
                 {author: "Brandon Goldman", text: "I am Brandon!"},
                 {author: "George Burke", text: "I am George!"},
                 {author: "Kenneth Ballenegger", text: "I am Kenneth!"}
-            ]};
+            ],
+            username: "Kenneth"
+        };
+    },
+    usernameChanged: function () {
+        var state = this.state;
+        state["username"] = this.refs.username.getDOMNode().value;
+        this.setState(state);
     },
     commentsUpdated: function (comment) {
         this.setState({data: this.state.data.concat(comment)});

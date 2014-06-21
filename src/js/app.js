@@ -1,5 +1,6 @@
-React = require('./../../vendor/react/react.js');
-_ = require('./../../vendor/mori.js');
+React = require('react');
+Router = require('react-router-component')
+_ = require('mori');
 
 require('./app-wisp.js');
 require('./app-jsx.js');

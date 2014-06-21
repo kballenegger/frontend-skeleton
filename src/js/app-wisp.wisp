@@ -5,11 +5,11 @@
 ;; implementation
 (set! empty-hash {})
 
-(console.log (reduce + (map inc [1 2 3])))
-(console.log (code-reverse
-               [1 2 3]
-               (map inc)
-               (reduce +)))
+;(console.log (reduce + (map inc [1 2 3])))
+;(console.log (code-reverse
+               ;[1 2 3]
+               ;(map inc)
+               ;(reduce +)))
 
 ;; This converts markdown to HTML. This is a mock parser.
 ;;

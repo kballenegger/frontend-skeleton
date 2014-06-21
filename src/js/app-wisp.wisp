@@ -1,15 +1,16 @@
-;(ns freshpay.app
-  ;(:require [wisp.src.sequence :all]))
+(ns freshpay.app
+  (:require [wisp.sequence :refer [reduce map]]
+            [wisp.runtime :refer [inc]]))
 
 ;; implementation
 (set! empty-hash {})
 
-;(console.log (map inc [1 2 3]))
+(console.log ((reduce + (map inc [1 2 3]))))
 
 ;; This converts markdown to HTML. This is a mock parser.
 ;;
-(def converter {:makeHtml (fn [x] (+ x " - parsed"))})
-(defn md->html
+(set! converter {:makeHtml (fn [x] (+ x " - parsed"))})
+(defn- md->html
   "convert markdown to html using showdown"
   [md]
   (converter.makeHtml md))

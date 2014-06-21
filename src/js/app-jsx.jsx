@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-require('./comment-app.js')
+var CommentBox = require('./comment-app.js')
 
 React.renderComponent(
     <div className="container">

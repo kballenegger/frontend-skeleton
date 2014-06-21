@@ -1,11 +1,15 @@
 (ns freshpay.app
   (:require [wisp.sequence :refer [reduce map]]
-            [wisp.runtime :refer [inc]]))
+            [wisp.runtime :refer [inc +]]))
 
 ;; implementation
 (set! empty-hash {})
 
-(console.log ((reduce + (map inc [1 2 3]))))
+(console.log (reduce + (map inc [1 2 3])))
+(console.log (code-reverse
+               [1 2 3]
+               (map inc)
+               (reduce +)))
 
 ;; This converts markdown to HTML. This is a mock parser.
 ;;

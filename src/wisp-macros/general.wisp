@@ -7,11 +7,14 @@
     (first operations)
     (rest operations)))
 
-(defmacro ->>
+; FIXME: this is brokeb... can't figure it out right now
+; TODO: naming; should be called ->>
+(defmacro code-reverse
   [& operations]
   (reduce
     (fn [form operation]
       (cons (first operation)
-            (cons (rest operation) form))) ; if i use concat here it crashes? wtf
+            (conj (rest operation) form)
+            ))
     (first operations)
     (rest operations)))

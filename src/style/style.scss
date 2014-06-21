@@ -1,19 +1,13 @@
 /* --- normalize / reset --- */
 @import 'normalize';
+@import 'bootstrap';
 
 /* --- real app css --- */
 
 body {
     padding: 10px;
 
-    #app-wisp {
-        width: 50%;
-        float: left;
-    }
-
     #app-jsx {
-        width: 50%;
-        float: left;
     }
 }
 

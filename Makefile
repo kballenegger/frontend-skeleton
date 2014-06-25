@@ -12,8 +12,8 @@ JSX ?= jsx
 NODE_ENV ?= production
 
 # Paths
-DIST ?= dist
-BUILD ?= build
+DIST ?= _dist
+BUILD ?= _build
 JSX_FILES := $(shell find ./src/js -name '*.jsx')
 WISP_FILES := $(shell find ./src/js -name '*.wisp')
 WISP_MACRO_FILES := $(shell find ./src/wisp-macros -name '*.wisp')

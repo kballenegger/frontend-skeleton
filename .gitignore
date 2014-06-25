@@ -1,4 +1,4 @@
-dev
-dist
-build
+_dev
+_dist
+_build
 .sass-cache

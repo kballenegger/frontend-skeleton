@@ -21,4 +21,4 @@ var App = React.createClass({
     }
 });
 
-React.renderComponent(<HelloWorld />, document.getElementById('app-jsx'));
+React.renderComponent(<App />, document.getElementById('app-jsx'));

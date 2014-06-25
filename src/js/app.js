@@ -3,7 +3,7 @@ React = require('react');
 Router = require('react-router-component');
 
 Locations = Router.Locations;
-Location = Router.Locations;
+Location = Router.Location;
 Link = Router.Link;
 NotFound = Router.NotFound;
 

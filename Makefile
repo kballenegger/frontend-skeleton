@@ -41,11 +41,17 @@ $(DIST)/index.html: src/index.html
 	@echo "Copying index.html."
 	@cat $^ > $@
 
+$(BUILD)/server/%.js: src/server/%.js
+	@echo "Copying server js: $^."
+	@cp $^ $@
+
+$(BUILD)/js/app.js: src/js/app.js
+	@cp $^ $@
+
 # files for target js
 # TODO: debug?
-$(DIST)/static/app.js: jsx wisp $(wildcard $(BUILD)/js/*.js)
+$(DIST)/static/app.js: jsx wisp $(BUILD)/js/app.js $(wildcard $(BUILD)/js/*.js)
 	@echo "Running browserify."
-	@cp src/js/app.js $(BUILD)/js/app.js
 	@browserify $(BUILD)/js/app.js > $(BUILD)/bundle.js
 	@echo "Running envify."
 	@NODE_ENV="$(NODE_ENV)" envify $(BUILD)/bundle.js > $@
@@ -65,15 +71,16 @@ html: $(DIST)/index.html
 
 jsx: $(patsubst ./src/js/%.jsx,./$(BUILD)/js/%.js,$(JSX_FILES))
 wisp: $(patsubst ./src/js/%.wisp,./$(BUILD)/js/%.js,$(WISP_FILES))
-js: $(DIST)/static/app.js
+js: $(DIST)/static/app.js $(BUILD)/server/server.js
 css: $(DIST)/static/style.css
 
 
 # Commands
 
-server:
+server: all server-only
+server-only:
 	@echo "Running server."
-	@cd $(DIST) && python -m SimpleHTTPServer
+	@DIST=$(DIST) BUILD=$(BUILD) node $(BUILD)/server/server.js
 
 dev:
 	@echo "Watching for filesystem changes, while running server."
@@ -92,6 +99,7 @@ file-structure:
 	@mkdir -p $(DEV)
 	@mkdir -p $(DIST)/static
 	@mkdir -p $(BUILD)/js
+	@mkdir -p $(BUILD)/server
 
 
-.PHONY: default clean file-structure all server dev deps concat html jsx wisp
+.PHONY: default clean file-structure all server dev deps concat html jsx wisp js server-only

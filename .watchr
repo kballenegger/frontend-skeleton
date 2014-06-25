@@ -14,8 +14,8 @@ def run_server
   quit_server if $server
   $server = fork do
     system('make')
-    Dir.chdir(ENV['DIST'])
-    exec('python -m SimpleHTTPServer')
+    #Dir.chdir(ENV['DIST'])
+    exec('make server-only')
   end
 end
 

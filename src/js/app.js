@@ -2,6 +2,7 @@
 React = require('react');
 Router = require('react-router-component');
 
+Pages = Router.Pages;
 Locations = Router.Locations;
 Location = Router.Location;
 Link = Router.Link;
@@ -14,4 +15,10 @@ _ = require('mori');
 
 // App source code
 //require('./app-wisp.js');
-require('./app-jsx.js');
+var App = require('./app-jsx.js');
+
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+    React.renderComponent(App({path: window.location.pathname}), document);
+} else {
+    module.exports = App;
+}

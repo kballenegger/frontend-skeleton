@@ -23,7 +23,7 @@ var CommentList = React.createClass({
     render: function () {
         var username = this.props.username;
         var comments = this.props.data.map(function (e) {
-            return <Comment author={e.author} text={e.text} username={username} />
+            return <Comment author={e.author} text={e.text} key={e.id} username={username} />
         });
         return <div>{comments}</div>;
     }
@@ -51,6 +51,8 @@ var CommentInput = React.createClass({
     }
 });
 
+var counter = 3;
+
 var CommentBox = module.exports = React.createClass({
     render: function () {
         return <div className="comment-box">
@@ -64,9 +66,9 @@ var CommentBox = module.exports = React.createClass({
     getInitialState: function () {
         return {
             data: [
-                {author: "Brandon Goldman", text: "I am Brandon!"},
-                {author: "George Burke", text: "I am George!"},
-                {author: "Kenneth Ballenegger", text: "I am Kenneth!"}
+                {id: 1, author: "Brandon Goldman", text: "I am Brandon!"},
+                {id: 2, author: "George Burke", text: "I am George!"},
+                {id: 3, author: "Kenneth Ballenegger", text: "I am Kenneth!"}
             ],
             username: "Kenneth"
         };
@@ -77,6 +79,7 @@ var CommentBox = module.exports = React.createClass({
         this.setState(state);
     },
     commentsUpdated: function (comment) {
+        comment[id] = ++counter;
         this.setState({data: this.state.data.concat(comment)});
     }
 });

@@ -14,6 +14,7 @@ NODE_ENV ?= production
 # Paths
 DIST ?= _dist
 BUILD ?= _build
+DEV ?= _dev
 JSX_FILES := $(shell find ./src/js -name '*.jsx')
 WISP_FILES := $(shell find ./src/js -name '*.wisp')
 WISP_MACRO_FILES := $(shell find ./src/wisp-macros -name '*.wisp')
@@ -74,18 +75,21 @@ server:
 	@echo "Running server."
 	@cd $(DIST) && python -m SimpleHTTPServer
 
-dev: file-structure
+dev:
 	@echo "Watching for filesystem changes, while running server."
-	@watchr .watchr
+	@DIST="$(DEV)/dist" BUILD="$(DEV)/build" make file-structure
+	@DIST="$(DEV)/dist" BUILD="$(DEV)/build" watchr .watchr
 
 clean:
 	@echo "Cleaning project."
 	@rm -rf $(DIST)/*
 	@rm -rf $(BUILD)/*
+	@rm -rf $(DEV)/*
 	@make file-structure
 
 file-structure: 
 	@echo "Creating file structure."
+	@mkdir -p $(DEV)
 	@mkdir -p $(DIST)/static
 	@mkdir -p $(BUILD)/js
 

@@ -2,8 +2,6 @@
 # vim: ft=ruby
 
 ENV['NODE_ENV'] = 'development'
-ENV['BUILD'] = 'dev/build'
-ENV['DIST'] = 'dev/dist'
 
 def quit_server
   return unless $server

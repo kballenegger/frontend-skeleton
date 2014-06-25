@@ -1,12 +1,5 @@
 // React stuff
 React = require('react');
-Router = require('react-router-component');
-
-Pages = Router.Pages;
-Locations = Router.Locations;
-Location = Router.Location;
-Link = Router.Link;
-NotFound = Router.NotFound;
 
 Bootstrap = require('react-bootstrap');
 
@@ -18,7 +11,7 @@ _ = require('mori');
 var App = require('./app-jsx.js');
 
 if (typeof document !== 'undefined' && typeof window !== 'undefined') {
-    React.renderComponent(App({path: window.location.pathname}), document);
+    React.renderComponent(App({path: window.location.pathname}), document.getElementById('app'));
 } else {
     module.exports = App;
 }

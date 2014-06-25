@@ -1,4 +1,13 @@
 /** @jsx React.DOM */
+
+
+var Router = require('react-router-component');
+var Locations = Router.Locations;
+var Location = Router.Location;
+var Link = Router.Link;
+var NotFound = Router.NotFound;
+
+
 var CommentBox = require('./comment-app.js')
 
 var Button = Bootstrap.Button;
@@ -12,23 +21,10 @@ var HelloWorld = React.createClass({
 
 var App = module.exports = React.createClass({
     render: function () {
-        return <html>
-            <head>
-                <title>FreshPay</title>
-                <meta charset="utf-8" />
-                <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" charset="utf-8" />
-            </head>
-            <body>
-                <div id="app">
-                    <Pages path={this.props.path}>
-                        <Location path="/" handler={HelloWorld} />
-                        <Location path="/comments" handler={CommentBox} />
-                        <NotFound handler={HelloWorld} />
-                    </Pages>
-                </div>
-
-                <script src="/static/app.js" type="text/javascript" charset="utf-8"></script>
-            </body>
-        </html>;
+        return <Locations path={this.props.path}>
+            <Location path="/" handler={HelloWorld} />
+            <Location path="/comments" handler={CommentBox} />
+            <NotFound handler={HelloWorld} />
+        </Locations>;
     }
 });

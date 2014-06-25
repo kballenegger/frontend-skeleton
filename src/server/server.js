@@ -16,22 +16,23 @@ ex.use(function(req, res, next) {
         var app = App({path: path});
         var markup = React.renderComponentToString(app);
 
-        //var html = '\
-            //<!DOCTYPE html>\
-            //<html>\
-            //<head>\
-                //<title>FreshPay</title>\
-                //<meta charset="utf-8" />\
-                //<link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" charset="utf-8" />\
-            //</head>\
-            //<body>\
-                //<div id="app">' + markup + '</div>\
-                //\
-                //<script src="/static/app.js" type="text/javascript" charset="utf-8"></script>\
-            //</body>\
-            //</html>';
+        var html = '\
+            <!DOCTYPE html>\
+            <html>\
+            <head>\
+                <title>FreshPay</title>\
+                <meta charset="utf-8" />\
+                <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" charset="utf-8" />\
+                <link rel="icon" href="/static/assets/favicon.ico">\
+            </head>\
+            <body>\
+                <div id="app">' + markup + '</div>\
+                \
+                <script src="/static/app.js" type="text/javascript" charset="utf-8"></script>\
+            </body>\
+            </html>';
 
-        res.send(markup);
+        res.send(html);
     } catch(err) {
         return next(err);
     }

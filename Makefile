@@ -19,6 +19,7 @@ JSX_FILES := $(shell find ./src/js -name '*.jsx')
 WISP_FILES := $(shell find ./src/js -name '*.wisp')
 WISP_MACRO_FILES := $(shell find ./src/wisp-macros -name '*.wisp')
 SCSS_FILES := $(shell find ./src/style -name '*.scss')
+ASSET_FILES := $(shell find ./src/assets)
 
 # Default target
 default: all
@@ -35,11 +36,6 @@ $(BUILD)/js/%.js: src/js/%.wisp
 $(BUILD)/js/%.js: src/js/%.jsx
 	@echo "Compiling JSX: $^."
 	@cat $^ | jsx > $@
-
-# file for target html
-$(DIST)/index.html: src/index.html
-	@echo "Copying index.html."
-	@cat $^ > $@
 
 $(BUILD)/server/%.js: src/server/%.js
 	@echo "Copying server js: $^."
@@ -62,15 +58,18 @@ $(DIST)/static/style.css: $(SCSS_FILES)
 	@echo "Compiling SCSS."
 	@sass src/style/style.scss $(DIST)/static/style.css
 
+$(DIST)/static/assets/%: src/assets/%
+	@echo "Copying asset: $^"
+	@cp $^ $@
+
 
 # Targets
 
-all: html js css
-
-html: $(DIST)/index.html
+all: html js css assets
 
 jsx: $(patsubst ./src/js/%.jsx,./$(BUILD)/js/%.js,$(JSX_FILES))
 wisp: $(patsubst ./src/js/%.wisp,./$(BUILD)/js/%.js,$(WISP_FILES))
+assets: $(patsubst ./src/assets/%,./$(DIST)/static/assets/%,$(ASSET_FILES))
 js: $(DIST)/static/app.js $(BUILD)/server/server.js
 css: $(DIST)/static/style.css
 
@@ -97,9 +96,9 @@ clean:
 file-structure: 
 	@echo "Creating file structure."
 	@mkdir -p $(DEV)
-	@mkdir -p $(DIST)/static
+	@mkdir -p $(DIST)/static/assets
 	@mkdir -p $(BUILD)/js
 	@mkdir -p $(BUILD)/server
 
 
-.PHONY: default clean file-structure all server dev deps concat html jsx wisp js server-only
+.PHONY: default clean file-structure all server dev deps concat html jsx wisp js server-only assets

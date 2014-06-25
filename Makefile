@@ -8,6 +8,9 @@
 SHELL := /bin/bash
 JSX ?= jsx
 
+# Variables
+NODE_ENV ?= production
+
 # Paths
 DIST ?= dist
 BUILD ?= build
@@ -41,8 +44,10 @@ $(DIST)/index.html: src/index.html
 # TODO: debug?
 $(DIST)/static/app.js: jsx wisp $(wildcard $(BUILD)/js/*.js)
 	@echo "Running browserify."
-	@cp src/js/app.js build/js/app.js
-	@browserify build/js/app.js > $@
+	@cp src/js/app.js $(BUILD)/js/app.js
+	@browserify $(BUILD)/js/app.js > $(BUILD)/bundle.js
+	@echo "Running envify."
+	@NODE_ENV="$(NODE_ENV)" envify $(BUILD)/bundle.js > $@
 
 # files for target scss
 # NOTE: only the root file is compiled, the rest are included by sass itself
@@ -67,9 +72,9 @@ css: $(DIST)/static/style.css
 
 server:
 	@echo "Running server."
-	@cd dist && python -m SimpleHTTPServer; cd ..
+	@cd $(DIST) && python -m SimpleHTTPServer
 
-dev:
+dev: file-structure
 	@echo "Watching for filesystem changes, while running server."
 	@watchr .watchr
 
@@ -85,5 +90,4 @@ file-structure:
 	@mkdir -p $(BUILD)/js
 
 
-# I don't understand this. TODO: read up on this.
-#.PHONY: default clean file-structure all server dev deps concat html jsx wisp
+.PHONY: default clean file-structure all server dev deps concat html jsx wisp

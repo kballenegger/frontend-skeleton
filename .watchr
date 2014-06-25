@@ -1,6 +1,10 @@
 # $server contains server.
 # vim: ft=ruby
 
+ENV['NODE_ENV'] = 'development'
+ENV['BUILD'] = 'dev/build'
+ENV['DIST'] = 'dev/dist'
+
 def quit_server
   return unless $server
   puts "Attempting to kill #{$server}"
@@ -12,7 +16,7 @@ def run_server
   quit_server if $server
   $server = fork do
     system('make')
-    Dir.chdir('dist')
+    Dir.chdir(ENV['DIST'])
     exec('python -m SimpleHTTPServer')
   end
 end

@@ -16,8 +16,7 @@ ex.use(function(req, res, next) {
         var app = App({path: path});
         var markup = React.renderComponentToString(app);
 
-        var html = '\
-            <!DOCTYPE html>\
+        var html = '<!DOCTYPE html>\
             <html>\
             <head>\
                 <title>FreshPay</title>\
@@ -26,7 +25,7 @@ ex.use(function(req, res, next) {
                 <link rel="icon" href="/static/assets/favicon.ico">\
             </head>\
             <body>\
-                <div id="app">' + markup + '</div>\
+                <div class="container" id="app">' + markup + '</div>\
                 \
                 <script src="/static/app.js" type="text/javascript" charset="utf-8"></script>\
             </body>\

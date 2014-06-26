@@ -57,7 +57,7 @@ var CommentBox = module.exports = React.createClass({
         return <div>
             <form className="form-inline"><div className="form-group">
                     <label className="control-label" style={{'padding-right': '10px'}}>Prefix: </label>
-                    <input className="form-control" type="text" value={cortex.prefs.prefix.val()}
+                    <input className="form-control" type="text" defaultValue={cortex.prefs.prefix.val()}
                         onChange={this.prefixChanged} ref="prefix" />
             </div></form>
             <h1>Comments:</h1>

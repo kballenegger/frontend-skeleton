@@ -55,7 +55,7 @@ var HelloWorld = React.createClass({
     },
     refreshLeader: function () {
         this.setState({leader: this.leader()});
-    }
+    },
 });
 
 
@@ -85,7 +85,7 @@ var PlainWrapper = function (body) {
     return React.createClass({
         render: function () {
             return <div>{body}</div>;
-        }
+        },
     });
 }
 
@@ -100,7 +100,7 @@ var cortex = new Cortex({
         {id: 3, author: "George Burke", text: "I am George!"},
         {id: 4, author: "Kenneth Ballenegger", text: "I am **Kenneth**!"}
     ],
-    prefs: {prefix: 'Author: '}
+    prefs: {prefix: 'Author: '},
 });
 
 

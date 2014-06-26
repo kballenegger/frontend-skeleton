@@ -10,7 +10,7 @@ var Comment = React.createClass({
         return <Panel header={this.props.prefix + this.props.author}>
             <div dangerouslySetInnerHTML={{__html: Markdown(this.props.text)}}></div>
         </Panel>;
-    }
+    },
 });
 
 var CommentList = React.createClass({
@@ -20,7 +20,7 @@ var CommentList = React.createClass({
             return <Comment author={e.author} text={e.text} key={e.id} prefix={prefix} />
         });
         return <div>{comments}</div>;
-    }
+    },
 });
 
 var CommentInput = React.createClass({
@@ -48,7 +48,7 @@ var CommentInput = React.createClass({
             this.props.comments.push({id: (new Date).getTime(), author: author, text: text});
         }
         return false;
-    }
+    },
 });
 
 var CommentBox = module.exports = React.createClass({
@@ -79,5 +79,5 @@ var CommentBox = module.exports = React.createClass({
     },
     prefixChanged: function () {
         this.props.prefix.set(this.refs.prefix.getDOMNode().value);
-    }
+    },
 });

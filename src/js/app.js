@@ -4,7 +4,7 @@ React = require('react');
 Bootstrap = require('react-bootstrap');
 
 // Mori
-_ = require('mori');
+_ = require('underscore');
 
 // App source code
 //require('./app-wisp.js');

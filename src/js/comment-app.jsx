@@ -15,8 +15,8 @@ var Comment = React.createClass({
 
 var CommentList = React.createClass({
     render: function () {
-        var prefix = this.props.prefix;
-        var comments = this.props.data.map(function (e) {
+        var prefix = this.props.prefix.val();
+        var comments = this.props.comments.val().map(function (e) {
             return <Comment author={e.author} text={e.text} key={e.id} prefix={prefix} />
         });
         return <div>{comments}</div>;
@@ -45,43 +45,39 @@ var CommentInput = React.createClass({
         if (text && author) {
             authorDom.value = '';
             textDom.value = '';
-            this.props.callback({author: author, text: text});
+            this.props.comments.push({id: (new Date).getTime(), author: author, text: text});
         }
         return false;
     }
 });
 
-var counter = 3;
 var CommentBox = module.exports = React.createClass({
     render: function () {
+        var cortex = this.props.cortex;
         return <div>
             <form className="form-inline"><div className="form-group">
                     <label className="control-label" style={{'padding-right': '10px'}}>Prefix: </label>
-                    <input className="form-control" type="text" value={this.state.prefix}
+                    <input className="form-control" type="text" value={cortex.prefs.prefix.val()}
                         onChange={this.prefixChanged} ref="prefix" />
             </div></form>
             <h1>Comments:</h1>
-            <CommentList data={this.state.data} prefix={this.state.prefix} />
-            <CommentInput callback={this.commentsUpdated} />
+            <CommentList comments={cortex.comments} prefix={cortex.prefs.prefix} />
+            <CommentInput comments={cortex.comments} />
         </div>;
     },
-    getInitialState: function () {
+    getDefaultProps: function () {
         return {
-            data: [
-                {id: 1, author: "Brandon Goldman", text: "I am Brandon!"},
-                {id: 2, author: "George Burke", text: "I am George!"},
-                {id: 3, author: "Kenneth Ballenegger", text: "I am **Kenneth**!"}
-            ],
-            prefix: "Author: "
+            comments: this.props.cortex.comments,
+            prefix: this.props.cortex.prefs.prefix
         };
     },
-    prefixChanged: function () {
-        var state = this.state;
-        state["prefix"] = this.refs.prefix.getDOMNode().value;
-        this.setState(state);
+    componentDidMount: function () {
+        var self = this;
+        self.props.cortex.on('update', function () {
+            self.setState({});
+        });
     },
-    commentsUpdated: function (comment) {
-        comment.id = ++counter;
-        this.setState({data: this.state.data.concat(comment)});
+    prefixChanged: function () {
+        this.props.prefix.set(this.refs.prefix.getDOMNode().value);
     }
 });

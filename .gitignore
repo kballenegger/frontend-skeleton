@@ -1,4 +1,5 @@
 _dev
 _dist
 _build
+node_modules
 .sass-cache

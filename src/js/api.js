@@ -61,7 +61,8 @@ API.Auth = {
         apiRequest.post('/auth/login')
             .send(payload)
             .end(end(function (res) {
-                console.log(res.body);
+                cortex.session.user.set(res.body.user);
+                cortex.session.auth.set(res.body.token);
             }));
     },
 };

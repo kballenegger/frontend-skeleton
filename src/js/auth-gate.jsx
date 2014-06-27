@@ -1,0 +1,62 @@
+/** @jsx React.DOM */
+
+var cortex = require('./cortex.js');
+var Auth = require('./api.js').Auth;
+
+
+var LoginForm = React.createClass({
+    render: function() {
+        var buttonClass = 'btn btn-primary' +
+            (this.state.enabled ? '' : ' disabled');
+        return <form onSubmit={this.submit}>
+            <div className="form-group">
+                <input type="email" className="form-control" placeholder="email" ref="email" />
+            </div>
+            <div className="form-group">
+                <input type="password" className="form-control" placeholder="password" ref="password" />
+            </div>
+            <div className="form-group">
+                <input type="submit" className={buttonClass} value="Login" />
+            </div>
+        </form>;
+    },
+    getInitialState: function () {
+        return {enabled: true};
+    },
+    submit: function () {
+        if (!this.state.enabled) { return false; }
+        this.setState({enabled: false});
+        // fake code
+        setTimeout(function () {
+            cortex.session.auth.set('123');
+        }, 3000);
+        return false;
+        // real code
+        var email = this.refs.email.getDOMNode().value.trim();
+        var password = this.refs.password.getDOMNode().value.trim();
+        if (email && password) {
+            Auth.login(email, password);
+        }
+        return false;
+    },
+});
+
+
+// This requires one property, `authorized`. That property must be a React
+// class. It will be instantiated and rendered when the content is valid.
+//
+// Any other properties set on this object will be passed down to its child.
+//
+var AuthGate = module.exports = React.createClass({
+    render: function () {
+        var props = this.props;
+        var authorized = props.authorized;
+        delete props.authorized;
+        if (cortex.session.auth.val()) {
+            // TODO: what about when the token is invalid?
+            return authorized(props);
+        } else {
+            return <LoginForm />;
+        }
+    },
+});

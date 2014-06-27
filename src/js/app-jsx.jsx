@@ -2,11 +2,11 @@
 
 // React stuff...
 //
-var Router = require('react-router-component');
-var Locations = Router.Locations;
-var Location = Router.Location;
-var Link = Router.Link;
-var NotFound = Router.NotFound;
+var ReactRouter = require('react-router-component');
+var Locations = ReactRouter.Locations;
+var Location = ReactRouter.Location;
+var Link = ReactRouter.Link;
+var NotFound = ReactRouter.NotFound;
 
 
 // App components...
@@ -14,11 +14,12 @@ var NotFound = Router.NotFound;
 var CommentBox = require('./comment-app.js');
 var HelloWorld = require('./home.js');
 var NavigationWrapper = require('./navigation.js');
+var AuthGate = require('./auth-gate.js');
 
 // Root router
 //
 var CaptureClicks = require('react-router-component/lib/CaptureClicks');
-var App = module.exports = React.createClass({
+var Router = React.createClass({
     render: function () {
         return <CaptureClicks>
             <Locations path={this.props.path}>
@@ -27,9 +28,14 @@ var App = module.exports = React.createClass({
                 <NotFound handler={HelloWorld} />
             </Locations>
         </CaptureClicks>;
-    }
+    },
 });
 
 
-var API = require('./api.js');
-API.Auth.login('kenneth@ballenegger.com', 'password');
+var App = module.exports = React.createClass({
+    render: function () {
+        var props = this.props;
+        props.authorized = Router;
+        return AuthGate(props);
+    },
+});

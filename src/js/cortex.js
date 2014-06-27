@@ -9,5 +9,8 @@ var cortex = module.exports = new Cortex({
         {id: 4, author: "Kenneth Ballenegger", text: "I am **Kenneth**!"}
     ],
     prefs: {prefix: 'Author: '},
-    session: {auth: null,}
+    session: {
+        user: {},
+        auth: null,
+    }
 });

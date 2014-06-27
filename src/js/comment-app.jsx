@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var cortex = require('./cortex.js');
+
 var Markdown = require('markdown-js').markdown;
 
 var Panel = Bootstrap.Panel;
@@ -53,7 +55,6 @@ var CommentInput = React.createClass({
 
 var CommentBox = module.exports = React.createClass({
     render: function () {
-        var cortex = this.props.cortex;
         return <div>
             <form className="form-inline"><div className="form-group">
                     <label className="control-label" style={{'padding-right': '10px'}}>Prefix: </label>
@@ -67,13 +68,13 @@ var CommentBox = module.exports = React.createClass({
     },
     getDefaultProps: function () {
         return {
-            comments: this.props.cortex.comments,
-            prefix: this.props.cortex.prefs.prefix
+            comments: cortex.comments,
+            prefix: cortex.prefs.prefix
         };
     },
     componentDidMount: function () {
         var self = this;
-        self.props.cortex.on('update', function () {
+        cortex.on('update', function () {
             self.setState({});
         });
     },

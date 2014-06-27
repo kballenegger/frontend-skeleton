@@ -15,6 +15,7 @@ NODE_ENV ?= production
 DIST ?= _dist
 BUILD ?= _build
 DEV ?= _dev
+JS_FILES := $(shell find ./src/js -name '*.js')
 JSX_FILES := $(shell find ./src/js -name '*.jsx')
 WISP_FILES := $(shell find ./src/js -name '*.wisp')
 WISP_MACRO_FILES := $(shell find ./src/wisp-macros -name '*.wisp')
@@ -41,12 +42,13 @@ $(BUILD)/server/%.js: src/server/%.js
 	@echo "Copying server js: $^."
 	@cp $^ $@
 
-$(BUILD)/js/app.js: src/js/app.js
+$(BUILD)/js/%.js: src/js/%.js
+	@echo "Copying client js: $^."
 	@cp $^ $@
 
 # files for target js
 # TODO: debug?
-$(DIST)/static/app.js: jsx wisp $(BUILD)/js/app.js $(wildcard $(BUILD)/js/*.js)
+$(DIST)/static/app.js: jsx wisp $(patsubst ./src/js/%.js,./$(BUILD)/js/%.js,$(JS_FILES))
 	@echo "Running browserify."
 	@browserify $(BUILD)/js/app.js > $(BUILD)/bundle.js
 	@echo "Running envify."
@@ -70,7 +72,7 @@ all: html js css assets
 jsx: $(patsubst ./src/js/%.jsx,./$(BUILD)/js/%.js,$(JSX_FILES))
 wisp: $(patsubst ./src/js/%.wisp,./$(BUILD)/js/%.js,$(WISP_FILES))
 assets: $(patsubst ./src/assets/%,./$(DIST)/static/assets/%,$(ASSET_FILES))
-js: $(DIST)/static/app.js $(BUILD)/server/server.js
+js: $(BUILD)/server/server.js $(DIST)/static/app.js
 css: $(DIST)/static/style.css
 
 

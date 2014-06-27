@@ -1,5 +1,8 @@
 /** @jsx React.DOM */
 
+// Data layer
+//
+var cortex = require('./cortex.js');
 
 // React stuff...
 //
@@ -12,7 +15,8 @@ var NotFound = Router.NotFound;
 
 // App components...
 //
-var CommentBox = require('./comment-app.js')
+var CommentBox = require('./comment-app.js');
+
 
 var Button = Bootstrap.Button
   , Jumbotron = Bootstrap.Jumbotron;
@@ -31,7 +35,7 @@ var HelloWorld = React.createClass({
         </Jumbotron>;
     },
     leader: function() {
-        var comments = this.props.cortex.comments.val();
+        var comments = cortex.comments.val();
         var grouped_counted = _.reduce(comments, function (acc, v) {
             if (!acc[v.author]) acc[v.author] = 0;
             acc[v.author] = acc[v.author] + 1;
@@ -48,10 +52,10 @@ var HelloWorld = React.createClass({
         return {leader: this.leader()};
     },
     componentDidMount: function () {
-        this.props.cortex.on('update', this.refreshLeader);
+        cortex.on('update', this.refreshLeader);
     },
     componentWillUnmount: function () {
-        this.props.cortex.off('update', this.refreshLeader);
+        cortex.off('update', this.refreshLeader);
     },
     refreshLeader: function () {
         this.setState({leader: this.leader()});
@@ -75,7 +79,7 @@ var NavigationWrapper = function (body) {
                 </Navbar>
                 {body}
             </div>;
-        }
+        },
     });
 };
 
@@ -90,20 +94,6 @@ var PlainWrapper = function (body) {
 }
 
 
-// Data layer
-//
-var Cortex = require('cortexjs');
-var cortex = new Cortex({
-    comments: [
-        {id: 1, author: "Brandon Goldman", text: "I am Brandon!"},
-        {id: 2, author: "George Burke", text: "I am George!"},
-        {id: 3, author: "George Burke", text: "I am George!"},
-        {id: 4, author: "Kenneth Ballenegger", text: "I am **Kenneth**!"}
-    ],
-    prefs: {prefix: 'Author: '},
-});
-
-
 // Root router
 //
 var CaptureClicks = require('react-router-component/lib/CaptureClicks');
@@ -111,10 +101,14 @@ var App = module.exports = React.createClass({
     render: function () {
         return <CaptureClicks>
             <Locations path={this.props.path}>
-                <Location path="/" handler={NavigationWrapper(HelloWorld({cortex: cortex}))} />
-                <Location path="/comments" handler={NavigationWrapper(CommentBox({cortex: cortex}))} />
-                <NotFound handler={PlainWrapper(HelloWorld({cortex: cortex}))} />
+                <Location path="/" handler={NavigationWrapper(HelloWorld())} />
+                <Location path="/comments" handler={NavigationWrapper(CommentBox())} />
+                <NotFound handler={PlainWrapper(HelloWorld())} />
             </Locations>
         </CaptureClicks>;
     }
 });
+
+
+var API = require('./api.js');
+API.Auth.login('kenneth@ballenegger.com', 'password');

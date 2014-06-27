@@ -1,7 +1,6 @@
 /** @jsx React.DOM */
 
 var cortex = require('./cortex.js');
-
 var Markdown = require('markdown-js').markdown;
 
 var Panel = Bootstrap.Panel;

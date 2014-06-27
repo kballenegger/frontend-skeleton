@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 
 var cortex = require('./cortex.js');
+var CortexReactivityMixin = require('./cortex-reactivity.js');
 var Markdown = require('markdown-js').markdown;
 
 var Panel = Bootstrap.Panel;
@@ -31,7 +32,7 @@ var CommentInput = React.createClass({
                 <input type="text" className="form-control" placeholder="Name" ref="author" />
             </div>
             <div className="form-group">
-                <textarea className="form-control" placeholder="Say something..." ref="text"></textarea>
+                <textarea className="form-control" placeholder="Say something..." ref="text" />
             </div>
             <div className="form-group">
                 <input type="submit" className="btn btn-primary" value="Post" />
@@ -53,6 +54,7 @@ var CommentInput = React.createClass({
 });
 
 var CommentBox = module.exports = React.createClass({
+    mixins: [CortexReactivityMixin],
     render: function () {
         return <div>
             <form className="form-inline"><div className="form-group">
@@ -70,12 +72,6 @@ var CommentBox = module.exports = React.createClass({
             comments: cortex.comments,
             prefix: cortex.prefs.prefix
         };
-    },
-    componentDidMount: function () {
-        var self = this;
-        cortex.on('update', function () {
-            self.setState({});
-        });
     },
     prefixChanged: function () {
         this.props.prefix.set(this.refs.prefix.getDOMNode().value);

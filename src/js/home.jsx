@@ -11,8 +11,8 @@ var Home = module.exports = React.createClass({
             <h1>Hello, World!</h1>
             <p>This mini app demonstrates Kenneth's awesome frontend skeleton.</p>
             <p>The person with the most comments is
-                <strong> {this.state.leader.author} </strong> with
-                <strong> {this.state.leader.count} </strong> comments.</p>
+                <strong> {this.leader().author} </strong> with
+                <strong> {this.leader().count} </strong> comments.</p>
             <Button bsStyle="primary"
                 href="http://toogl.es/#/view/dQw4w9WgXcQ">Learn More</Button>
             <Button href="/comments" style={{'margin-left': '10px'}}>Comments</Button>
@@ -31,17 +31,5 @@ var Home = module.exports = React.createClass({
             }
             return acc;
         }, {count: 0});
-    },
-    getInitialState: function () {
-        return {leader: this.leader()};
-    },
-    componentDidMount: function () {
-        cortex.on('update', this.refreshLeader);
-    },
-    componentWillUnmount: function () {
-        cortex.off('update', this.refreshLeader);
-    },
-    refreshLeader: function () {
-        this.setState({leader: this.leader()});
     },
 });

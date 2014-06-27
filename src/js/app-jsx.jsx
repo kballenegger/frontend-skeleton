@@ -15,7 +15,6 @@ var CommentBox = require('./comment-app.js');
 var HelloWorld = require('./home.js');
 var NavigationWrapper = require('./navigation.js');
 var AuthGate = require('./auth-gate.js');
-var CortexReactivity = require('./cortex-reactivity.js');
 
 // Root router
 //
@@ -37,6 +36,6 @@ var App = module.exports = React.createClass({
     render: function () {
         var props = this.props;
         props.authorized = Router;
-        return CortexReactivity(null, AuthGate(props));
+        return AuthGate(props);
     },
 });

@@ -1,25 +1,15 @@
 var cortex = require('./cortex.js');
 
-// NOTE: this may not even work at all. Maybe remove this altogether.
+// TODO: only react to change to a small part of the tree, instead of all...
 //
-var CortexReactivity = module.exports = React.createClass({
-    propTypes: {
-        children: React.PropTypes.component.isRequired,
-    },
-    render: function () {
-        console.log('cortex react render');
-        return this.props.children;
-    },
+var CortexReactivityMixin = module.exports = {
     componentDidMount: function () {
-        cortex.on('update', this.refresh);
+        cortex.on('update', this.cortexReactivityMixinRefresh);
     },
     componentWillUnmount: function () {
-        cortex.off('update', this.refresh);
+        cortex.off('update', this.cortexReactivityMixinRefresh);
     },
-    refresh: function () {
-        // this triggers a refresh of the entire app:
-        console.log('entire tree refresh triggered');
-        this.setState({lastRefresh: (new Date).getTime()});
-        //this.forceUpdate();
+    cortexReactivityMixinRefresh: function () {
+        this.setState({cortexReactivityMixinLastRefresh: (new Date).getTime()});
     },
-});
+};

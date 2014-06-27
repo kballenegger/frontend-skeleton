@@ -3,10 +3,10 @@
 var cortex = require('./cortex.js');
 var Auth = require('./api.js').Auth;
 
+var CortexReactivityMixin = require('./cortex-reactivity.js');
 
 var LoginForm = React.createClass({
     render: function() {
-        console.log('login form render');
         var buttonClass = 'btn btn-primary' +
             (this.state.enabled ? '' : ' disabled');
         return <form onSubmit={this.submit}>
@@ -27,9 +27,7 @@ var LoginForm = React.createClass({
     submit: function () {
         if (!this.state.enabled) { return false; }
         // fake code
-        console.log('timeout')
         setTimeout(function () {
-            console.log('setting')
             cortex.session.auth.set('123');
         }, 1000);
         this.setState({enabled: false});
@@ -51,14 +49,12 @@ var LoginForm = React.createClass({
 // Any other properties set on this object will be passed down to its child.
 //
 var AuthGate = module.exports = React.createClass({
+    mixins: [CortexReactivityMixin],
     render: function () {
-        console.log('rerendering: auth gate');
         var authorized = this.props.authorized;
-        console.log('rerendering');
-        console.log(cortex.session.auth.val());
         if (cortex.session.auth.val()) {
             // TODO: what about when the token is invalid?
-            return transferPropsTo(authorized());
+            return this.transferPropsTo(authorized());
         } else {
             return <LoginForm />;
         }

@@ -6,6 +6,7 @@ var Auth = require('./api.js').Auth;
 
 var LoginForm = React.createClass({
     render: function() {
+        console.log('login form render');
         var buttonClass = 'btn btn-primary' +
             (this.state.enabled ? '' : ' disabled');
         return <form onSubmit={this.submit}>
@@ -25,11 +26,13 @@ var LoginForm = React.createClass({
     },
     submit: function () {
         if (!this.state.enabled) { return false; }
-        this.setState({enabled: false});
         // fake code
+        console.log('timeout')
         setTimeout(function () {
+            console.log('setting')
             cortex.session.auth.set('123');
-        }, 3000);
+        }, 1000);
+        this.setState({enabled: false});
         return false;
         // real code
         var email = this.refs.email.getDOMNode().value.trim();
@@ -49,12 +52,13 @@ var LoginForm = React.createClass({
 //
 var AuthGate = module.exports = React.createClass({
     render: function () {
-        var props = this.props;
-        var authorized = props.authorized;
-        delete props.authorized;
+        console.log('rerendering: auth gate');
+        var authorized = this.props.authorized;
+        console.log('rerendering');
+        console.log(cortex.session.auth.val());
         if (cortex.session.auth.val()) {
             // TODO: what about when the token is invalid?
-            return authorized(props);
+            return transferPropsTo(authorized());
         } else {
             return <LoginForm />;
         }

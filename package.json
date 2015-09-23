@@ -24,12 +24,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kballenegger/freshpay-web-app.git"
+    "url": "https://github.com/kballenegger/kballenegger-web-app.git"
   },
   "author": "Kenneth Ballenegger",
   "license": "http://license.azuretalon.com",
   "bugs": {
-    "url": "https://github.com/kballenegger/freshpay-web-app/issues"
+    "url": "https://github.com/kballenegger/kballenegger-web-app/issues"
   },
-  "homepage": "https://github.com/kballenegger/freshpay-web-app"
+  "homepage": "https://github.com/kballenegger/kballenegger-web-app"
 }
